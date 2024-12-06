@@ -1,0 +1,50 @@
+CREATE DATABASE producao;
+USE producao;
+
+CREATE TABLE usuarios (
+    cod_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    faixa_etaria VARCHAR(50),
+    cidade VARCHAR(50),
+    estado VARCHAR(50)
+);
+
+CREATE TABLE produtos (
+    cod_produto INT PRIMARY KEY AUTO_INCREMENT,
+    nome_jogo VARCHAR(100),
+    categoria VARCHAR(50),
+    desenvolvedor VARCHAR(100),
+    plataforma VARCHAR(50)
+);
+
+CREATE TABLE vendas (
+    cod_venda INT PRIMARY KEY AUTO_INCREMENT,
+    cod_usuario INT,
+    cod_produto INT,
+    data_venda DATE,
+    quantidade INT,
+    valor_total DECIMAL(10, 2),
+    FOREIGN KEY (cod_usuario) REFERENCES usuarios(cod_usuario),
+    FOREIGN KEY (cod_produto) REFERENCES produtos(cod_produto)
+);
+
+USE producao;
+
+DELIMITER //
+
+CREATE TRIGGER trg_insert_dim_usuarios
+AFTER INSERT ON usuarios
+FOR EACH ROW
+BEGIN
+    CALL homologacao.insert_into_dim_usuarios(
+        NEW.cod_usuario, 
+        NEW.nome, 
+        NEW.faixa_etaria, 
+        NEW.cidade, 
+        NEW.estado
+    );
+END;
+//
+
+DELIMITER ;
