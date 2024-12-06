@@ -48,3 +48,23 @@ END;
 //
 
 DELIMITER ;
+
+INSERT INTO usuarios (nome, email, faixa_etaria, cidade, estado) VALUES
+('Carlos Silva', 'carlos.silva@email.com', '25-34', 'São Paulo', 'SP'),
+('Mariana Oliveira', 'mariana.oliveira@email.com', '35-44', 'Rio de Janeiro', 'RJ'),
+('João Santos', 'joao.santos@email.com', '18-24', 'Belo Horizonte', 'MG'),
+('Ana Costa', 'ana.costa@email.com', '45-54', 'Porto Alegre', 'RS');
+
+INSERT INTO produtos (nome_jogo, categoria, desenvolvedor, plataforma) VALUES
+('Super Mario Bros', 'Aventura', 'Nintendo', 'NES'),
+('Street Fighter II', 'Luta', 'Capcom', 'SNES'),
+('Sonic the Hedgehog', 'Ação', 'Sega', 'Mega Drive'),
+('The Legend of Zelda', 'RPG', 'Nintendo', 'NES'),
+('Pac-Man', 'Clássico', 'Namco', 'Arcade');
+
+INSERT INTO vendas (cod_usuario, cod_produto, data_venda, quantidade, valor_total) VALUES
+(1, 1, '2024-12-01', 1, 100.00),
+(2, 2, '2024-12-02', 2, 150.00),
+(3, 3, '2024-12-03', 1, 80.00),
+(4, 4, '2024-12-04', 1, 200.00),
+(1, 5, '2024-12-05', 3, 90.00);
