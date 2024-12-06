@@ -1,0 +1,59 @@
+CREATE DATABASE homologacao;
+USE homologacao;
+
+CREATE TABLE dim_usuarios (
+    cod_usuario INT PRIMARY KEY,
+    nome VARCHAR(100),
+    faixa_etaria VARCHAR(50),
+    cidade VARCHAR(50),
+    estado VARCHAR(50)
+);
+
+CREATE TABLE dim_produtos (
+    cod_produto INT PRIMARY KEY,
+    nome_jogo VARCHAR(100),
+    categoria VARCHAR(50),
+    desenvolvedor VARCHAR(100),
+    plataforma VARCHAR(50)
+);
+
+CREATE TABLE fato_vendas (
+    cod_venda INT PRIMARY KEY,
+    cod_usuario INT,
+    cod_produto INT,
+    data_venda DATE,
+    quantidade INT,
+    valor_total DECIMAL(10, 2),
+    FOREIGN KEY (cod_usuario) REFERENCES dim_usuarios(cod_usuario),
+    FOREIGN KEY (cod_produto) REFERENCES dim_produtos(cod_produto)
+);
+
+CREATE VIEW vw_dim_usuarios AS
+SELECT cod_usuario, nome, faixa_etaria, cidade, estado
+FROM producao.usuarios;
+
+CREATE VIEW vw_dim_produtos AS
+SELECT cod_produto, nome_jogo, categoria, desenvolvedor, plataforma
+FROM producao.produtos;
+
+CREATE VIEW vw_fato_vendas AS
+SELECT 
+    v.cod_venda,
+    v.cod_usuario,
+    v.cod_produto,
+    v.data_venda,
+    v.quantidade,
+    v.valor_total
+FROM producao.vendas v;
+
+INSERT INTO homologacao.dim_usuarios (cod_usuario, nome, faixa_etaria, cidade, estado)
+SELECT cod_usuario, nome, faixa_etaria, cidade, estado
+FROM producao.usuarios;
+
+INSERT INTO homologacao.dim_produtos (cod_produto, nome_jogo, categoria, desenvolvedor, plataforma)
+SELECT cod_produto, nome_jogo, categoria, desenvolvedor, plataforma
+FROM producao.produtos;
+
+INSERT INTO homologacao.fato_vendas (cod_venda, cod_usuario, cod_produto, data_venda, quantidade, valor_total)
+SELECT cod_venda, cod_usuario, cod_produto, data_venda, quantidade, valor_total
+FROM producao.vendas;
